@@ -29,6 +29,18 @@ A simple MERN backend authentication service built with **Node.js**, **Express**
 
 ---
 
+
+## Prerequisites
+
+Before running this project, ensure you have the following installed:
+
+- Node.js (v18 or later recommended)
+- npm
+- MongoDB (Local installation or MongoDB Atlas)
+- Git
+
+---
+
 ## Project Structure
 
 ```
@@ -151,7 +163,7 @@ Profile Update
 
 * Name required
 * Minimum 2 characters
-* Maximum 50 characters
+* Maximum 20 characters
 
 ---
 
