@@ -13,6 +13,8 @@ A simple MERN backend authentication service built with **Node.js**, **Express**
 * Request Validation using Zod
 * Request Logging Middleware
 * MongoDB Integration
+* CORS Configuration
+
 
 ---
 
@@ -104,8 +106,11 @@ Example:
 
 ```
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/user-auth-db
+MONGODB_URI=mongodb://localhost:27017/user-auth-app
 JWT_SECRET=your_super_secret_jwt_key
+JWT_EXPIRES_IN=7d
+CORS_ORIGIN=http://localhost:3000
+
 ```
 
 ---
