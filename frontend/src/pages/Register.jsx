@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../api/auth";
+import { validateRegister } from "../utils/validateRegister";
+import PasswordToggleButton from "../components/PasswordToggleButton";
 
 function Register() {
   const navigate = useNavigate();
@@ -11,9 +13,11 @@ function Register() {
     password: "",
   });
 
+  const [fieldErrors, setFieldErrors] = useState({});
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -22,6 +26,24 @@ function Register() {
       ...prevData,
       [name]: value,
     }));
+
+    setFieldErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
+  }
+
+  function mapApiFieldErrors(apiErrors) {
+    if (!apiErrors || typeof apiErrors !== "object") {
+      return {};
+    }
+
+    return Object.fromEntries(
+      Object.entries(apiErrors).map(([field, messages]) => [
+        field,
+        Array.isArray(messages) ? messages[0] : messages,
+      ])
+    );
   }
 
   async function handleSubmit(event) {
@@ -30,10 +52,24 @@ function Register() {
     setError("");
     setSuccess("");
 
+    const validationErrors = validateRegister(formData);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setFieldErrors(validationErrors);
+      return;
+    }
+
+    setFieldErrors({});
     setLoading(true);
 
     try {
-      const response = await registerUser(formData);
+      const payload = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        password: formData.password,
+      };
+
+      const response = await registerUser(payload);
 
       setSuccess(response.message || "Registration successful!");
 
@@ -41,7 +77,13 @@ function Register() {
         navigate("/login");
       }, 1500);
     } catch (err) {
-      setError(err.message);
+      const apiFieldErrors = mapApiFieldErrors(err.errors);
+
+      if (Object.keys(apiFieldErrors).length > 0) {
+        setFieldErrors(apiFieldErrors);
+      } else {
+        setError(err.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -52,7 +94,7 @@ function Register() {
       <div className="card">
         <h2>Register</h2>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
 
           <label>Name</label>
           <input
@@ -61,8 +103,10 @@ function Register() {
             placeholder="Enter your name"
             value={formData.name}
             onChange={handleChange}
-            required
           />
+          {fieldErrors.name && (
+            <p className="field-error">{fieldErrors.name}</p>
+          )}
 
           <label>Email</label>
           <input
@@ -71,18 +115,28 @@ function Register() {
             placeholder="Enter your email"
             value={formData.email}
             onChange={handleChange}
-            required
           />
+          {fieldErrors.email && (
+            <p className="field-error">{fieldErrors.email}</p>
+          )}
 
           <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter your password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+          <div className="password-field">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <PasswordToggleButton
+              showPassword={showPassword}
+              onToggle={() => setShowPassword((prev) => !prev)}
+            />
+          </div>
+          {fieldErrors.password && (
+            <p className="field-error">{fieldErrors.password}</p>
+          )}
 
           {error && <p className="error">{error}</p>}
 

@@ -1,16 +1,144 @@
-# React + Vite
+# User Authentication Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React frontend for the user authentication app, built with **React**, **Vite**, and **React Router**.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+* User Registration with client-side validation
+* User Login
+* JWT token storage in `localStorage`
+* Protected routes for authenticated pages
+* Dashboard with profile details
+* Edit logged-in user's name
+* Password show / hide toggle
+* Logout
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* React
+* Vite
+* React Router DOM
+* Fetch API
+* CSS
+
+---
+
+
+## Prerequisites
+
+Before running this project, ensure you have the following installed:
+
+- Node.js (v18 or later recommended)
+- npm
+- Git
+- Backend API running (see `backend/README.md`)
+
+---
+
+## Project Structure
+
+```
+src
+│
+├── api
+│   └── auth.js
+│
+├── components
+│   ├── Navbar.jsx
+│   ├── PasswordToggleButton.jsx
+│   └── ProtectedRoute.jsx
+│
+├── pages
+│   ├── Dashboard.jsx
+│   ├── EditProfile.jsx
+│   ├── Login.jsx
+│   └── Register.jsx
+│
+├── utils
+│   └── validateRegister.js
+│
+├── App.jsx
+├── index.css
+└── main.jsx
+```
+
+---
+
+## Installation
+
+Clone the repository
+
+```bash
+git clone https://github.com/JoyelSuresh/user-auth-app.git
+```
+
+Move into the project
+
+```bash
+cd frontend
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+---
+
+## Environment Variables
+
+Create a `.env` file in the `frontend` folder.
+
+Example:
+
+```
+VITE_API_URL=http://localhost:5000
+```
+
+---
+
+## Run the Application
+
+Development
+
+```bash
+npm run dev
+```
+
+App
+
+```
+http://localhost:5173
+```
+
+---
+
+## Authentication
+
+After login, the JWT is stored in `localStorage` as `token`.
+
+Protected API calls use:
+
+```
+Authorization: Bearer <your_jwt_token>
+```
+
+---
+
+## Validation
+
+Registration is validated on the client before the API request.
+
+Registration
+
+* Name: 2–20 characters
+* Valid email
+* Password minimum 8 characters
+* One uppercase letter
+* One lowercase letter
+* One number
+* One special character
