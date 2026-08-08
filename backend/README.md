@@ -109,7 +109,7 @@ PORT=5000
 MONGODB_URI=mongodb://localhost:27017/user-auth-app
 JWT_SECRET=your_super_secret_jwt_key
 JWT_EXPIRES_IN=7d
-CORS_ORIGIN=http://localhost:3000
+CORS_ORIGIN=http://localhost:5173
 
 ```
 

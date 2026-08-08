@@ -15,7 +15,7 @@ export const validate =
       if (error instanceof ZodError) {
         return res.status(400).json({
           success: false,
-          message: "Validation failed",
+          message: "Registration failed",
           errors: error.flatten().fieldErrors,
         });
       }

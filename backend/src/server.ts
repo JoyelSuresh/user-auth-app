@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth.routes";
 import { requestLogger } from "./middleware/requestLogger";
 
 dotenv.config();
+console.log("CORS_ORIGIN =", process.env.CORS_ORIGIN);
 
 const app = express();
 const port = Number(process.env.PORT) || 5000;
