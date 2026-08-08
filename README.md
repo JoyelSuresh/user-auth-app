@@ -34,16 +34,18 @@ Full-stack user authentication app for **local development**: **React + Vite** f
 
 ## Development Architecture
 
-```mermaid
-flowchart LR
-  Browser["Browser<br/>localhost:5173"]
-  Frontend["React + Vite"]
-  Backend["Express API<br/>localhost:5000"]
-  DB[(MongoDB)]
-
-  Browser --> Frontend
-  Frontend -->|"fetch + JWT"| Backend
-  Backend --> DB
+```text
+Browser (localhost:5173)
+        |
+        v
+  React + Vite Frontend
+        |
+        |  fetch + JWT
+        v
+  Express API (localhost:5000)
+        |
+        v
+     MongoDB
 ```
 
 ---
@@ -322,26 +324,33 @@ Authorization: Bearer <jwt_token>
 
 ## Authentication Flow
 
-```mermaid
-sequenceDiagram
-  participant U as User
-  participant FE as Frontend :5173
-  participant BE as Backend :5000
-  participant DB as MongoDB
-
-  U->>FE: Register or Login
-  FE->>BE: POST /auth/register or /auth/login
-  BE->>DB: Create user / find + verify password
-  DB-->>BE: User document
-  BE-->>FE: JWT + user
-  FE->>FE: Save token in localStorage
-
-  U->>FE: Open Dashboard / Edit Profile
-  FE->>BE: GET or PATCH /auth/profile (Bearer token)
-  BE->>BE: Verify JWT
-  BE->>DB: Read / update user
-  DB-->>BE: User data
-  BE-->>FE: Profile data
+```text
+Register / Login
+       |
+       v
+Frontend  ----POST /auth/register or /login---->  Backend
+       |                                            |
+       |                                            v
+       |                                         MongoDB
+       |                                            |
+       | <----------- JWT + user -------------------
+       |
+       v
+Save token in localStorage
+       |
+       v
+Open Dashboard / Edit Profile
+       |
+       v
+Frontend  ----GET/PATCH /auth/profile---->  Backend
+              (Bearer token)                  |
+                                              v
+                                         Verify JWT
+                                              |
+                                              v
+                                           MongoDB
+                                              |
+Frontend  <--------- profile data ------------
 ```
 
 1. Register or log in.
