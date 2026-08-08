@@ -201,7 +201,6 @@ JWT signing uses `JWT_SECRET` and a `"7d"` expiry. Do not commit real `.env` fil
 | Command | Description |
 |---------|-------------|
 | `npm run dev` | Start Vite dev server |
-| `npm run lint` | Run ESLint |
 
 ---
 
