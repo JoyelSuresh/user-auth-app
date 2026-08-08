@@ -359,7 +359,3 @@ Frontend  <--------- profile data ------------
 5. Logout removes the token from `localStorage`.
 
 ---
-
-## License
-
-ISC (see package manifests in `backend/` and `frontend/`).
